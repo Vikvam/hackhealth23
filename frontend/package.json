@@ -26,6 +26,8 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^2.0.3",
+		"@tanstack/svelte-table": "^8.10.7",
+		"slickgrid": "^5.5.4",
 		"svelte-kit": "^1.2.0"
 	}
 }
