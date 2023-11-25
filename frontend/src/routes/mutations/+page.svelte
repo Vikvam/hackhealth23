@@ -16,7 +16,7 @@
     }
 
     onMount(async () => {
-        let columns = [
+        columns = [
             { id: "Chromosome", name: "Chromosome", field: "Chromosome" },
             { id: "Region", name: "Region", field: "Region" },
             { id: "Type", name: "Type", field: "Type" },
@@ -62,4 +62,3 @@
 {#if mounted}
     <Table {columns} {rows} />
 {/if}
-
