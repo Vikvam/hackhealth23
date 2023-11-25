@@ -19,7 +19,7 @@
     function onCellChange(_, args) {
         const biopsy_id = args.item["biopsy_id"];
         const column = args.column.field;
-        const change = {column: args.item[column]};
+        const change = {[column]: args.item[column]};
         fetch(
             "http://localhost:8000/biopsy/" + biopsy_id,
             {method: "POST", body: JSON.stringify(change), mode: "cors", headers: {"Content-Type": "application/json"}},
