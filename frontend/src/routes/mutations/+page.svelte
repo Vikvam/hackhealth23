@@ -1,55 +1,67 @@
 <script>
     import { onMount } from "svelte";
-    import { SlickGrid, CheckboxFormatter, GridAutosizeColsMode } from "slickgrid";
+    import { SlickGrid } from "slickgrid";
 
     let data = [];
     let grid;
 
     let columns = [
-        { id: "Chromosome", name: "Chromosome", field: "Chromosome" },
-        { id: "Region", name: "Region", field: "Region" },
-        { id: "Type", name: "Type", field: "Type" },
-        { id: "Reference", name: "Reference", field: "Reference" },
-        { id: "Allele", name: "Allele", field: "Allele" },
-        { id: "Length", name: "Length", field: "Length" },
-        { id: "Count", name: "Count", field: "Count" },
-        { id: "Coverage", name: "Coverage", field: "Coverage" },
-        { id: "Frequency", name: "Frequency", field: "Frequency" },
+        {
+            id: "Chromosome",
+            name: "Chromosome",
+            field: "Chromosome",
+            width: 100,
+        },
+        { id: "Region", name: "Region", field: "Region", width: 150 },
+        { id: "Type", name: "Type", field: "Type", width: 100 },
+        { id: "Reference", name: "Reference", field: "Reference", width: 150 },
+        { id: "Allele", name: "Allele", field: "Allele", width: 100 },
+        { id: "Length", name: "Length", field: "Length", width: 100 },
+        { id: "Count", name: "Count", field: "Count", width: 100 },
+        { id: "Coverage", name: "Coverage", field: "Coverage", width: 100 },
+        { id: "Frequency", name: "Frequency", field: "Frequency", width: 100 },
         {
             id: "ForwardReverseBalance",
             name: "Forward Reverse Balance",
             field: "Forward Reverse Balance",
+            width: 150,
         },
         {
             id: "AverageQuality",
             name: "Average Quality",
             field: "Average Quality",
+            width: 150,
         },
-        { id: "GeneName", name: "Gene Name", field: "Gene Name" },
+        { id: "GeneName", name: "Gene Name", field: "Gene Name", width: 150 },
         {
             id: "CodingRegionChange",
             name: "Coding Region Change",
             field: "Coding Region Change",
+            width: 200,
         },
         {
             id: "AminoAcidChange",
             name: "Amino Acid Change",
             field: "Amino Acid Change",
+            width: 150,
         },
-        { id: "ExonNumber", name: "Exon Number", field: "Exon Number" },
+        {
+            id: "ExonNumber",
+            name: "Exon Number",
+            field: "Exon Number",
+            width: 150,
+        },
         {
             id: "TypeOfMutation",
             name: "Type of Mutation",
             field: "Type of Mutation",
+            width: 150,
         },
     ];
 
-    console.log("cols mode", GridAutosizeColsMode)
-
     var options = {
-        enableCellNavigation: true,
-        enableColumnReorder: false,
-        autoSizeColsMode: "FCV",
+        enableCellNavigation: false,
+        enableColumnReorder: true,
     };
 
     onMount(async () => {
@@ -59,13 +71,6 @@
 
         // Initialize SlickGrid with the retrieved data
         grid = new SlickGrid("#myGrid", data, columns, options);
-
-        function resize() {
-            grid.resizeCanvas();
-          grid.autosizeColumns();
-            setTimeout(resize, 50);
-        }
-        resize()
     });
 </script>
 
