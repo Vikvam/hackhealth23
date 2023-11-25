@@ -10,7 +10,7 @@
   <NavHamburger  />
   <NavUl >
     <NavLi href="/">Home</NavLi>
-    <NavLi href="/patients">Patient</NavLi>
+    <NavLi href="/upload">Upload Biopsy</NavLi>
     <NavLi href="/biopsies">Biopsies</NavLi>
     <NavLi href="/mutations">Mutations</NavLi>
     <NavLi href="/settings">Settings</NavLi>
