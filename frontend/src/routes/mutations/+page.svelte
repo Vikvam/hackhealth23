@@ -1,11 +1,22 @@
 <script>
     import { onMount } from "svelte";
-    import { SlickGrid } from "slickgrid";
+    import Table from "$lib/components/Table.svelte";
 
-    let data = [];
-    let grid;
+    let mounted = false;
+    let columns = [];
+    let rows = [];
 
-    let columns = [
+    async function fetchData() {
+        const response = await fetch("http://localhost:8000/dg");
+        if (response.status > 400) {
+            console.log("ERR"); // TODO
+            return;
+        }
+        return response.json();
+    }
+
+    onMount(async () => {
+        columns = [
         {
             id: "Chromosome",
             name: "Chromosome",
@@ -58,23 +69,14 @@
             width: 150,
         },
     ];
-
-    var options = {
-        enableCellNavigation: false,
-        enableColumnReorder: true,
-    };
-
-    onMount(async () => {
-        const response = await fetch("http://localhost:8000/dg");
-        const result = await response.json();
-        data = result.dg;
-
-        // Initialize SlickGrid with the retrieved data
-        grid = new SlickGrid("#myGrid", data, columns, options);
+        rows = (await fetchData()).dg;
+        mounted = true;
     });
 </script>
 
-<div id="myGrid" />
+{#if mounted}
+    <Table {columns} {rows} />
+{/if}
 
 <style>
     /* Add any custom styling for your table */
