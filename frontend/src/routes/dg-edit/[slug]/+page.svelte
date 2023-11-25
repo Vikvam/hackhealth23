@@ -23,6 +23,8 @@
 
     onMount(async () => {
         columns = [
+            {id: "id", name: "id", field: "id"},
+            {id: "Biopsy id", name: "Biopsy id", field: "Biopsy id"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},
             {id: "Region", name: "Region", field: "Region"},
             {id: "Type", name: "Type", field: "Type"},
@@ -36,19 +38,12 @@
             {id: "AverageQuality", name: "Average Quality", field: "Average Quality"},
             {id: "GeneName", name: "Gene Name", field: "Gene Name"},
             {id: "CodingRegionChange", name: "Coding Region Change", field: "Coding Region Change"},
-            {
-                id: "AminoAcidChange",
-                name: "Amino Acid Change",
-                field: "Amino Acid Change",
-            },
+            {id: "AminoAcidChange", name: "Amino Acid Change", field: "Amino Acid Change"},
             {id: "ExonNumber", name: "Exon Number", field: "Exon Number"},
-            {
-                id: "TypeOfMutation",
-                name: "Type of Mutation",
-                field: "Type of Mutation",
-            },
+            {id: "TypeOfMutation", name: "Type of Mutation", field: "Type of Mutation"},
         ];
         rows = await fetchData();
+        console.log(rows)
         mounted = true;
     });
 </script>
