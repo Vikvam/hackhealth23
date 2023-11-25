@@ -9,7 +9,6 @@
     let slug = data.slug;
 
     let mounted = false;
-
     let columns = [];
     let rows = [];
 
@@ -52,7 +51,6 @@
             {id: "TypeOfMutation", name: "Type of Mutation", field: "Type of Mutation"},
         ];
         rows = (await fetchData()).dg;
-        console.log(rows)
         mounted = true;
     });
 </script>
@@ -64,7 +62,7 @@
 
 {#if mounted}
     <Table {columns} {rows} />
-    }{/if}
+{/if}
 
 <style>
     span {

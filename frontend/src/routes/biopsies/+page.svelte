@@ -1,80 +1,52 @@
 <script>
     import { onMount } from "svelte";
-    import { SlickGrid, CheckboxFormatter, GridAutosizeColsMode } from "slickgrid";
+    import {TextEditor} from "slickgrid";
+    import Table from "$lib/components/Table.svelte";
 
-    let data = [];
-    let grid;
+    let mounted = false;
+    let columns = [];
+    let rows = [];
 
-    let columns = [
-        { id: "Chromosome", name: "Chromosome", field: "Chromosome" },
-        { id: "Region", name: "Region", field: "Region" },
-        { id: "Type", name: "Type", field: "Type" },
-        { id: "Reference", name: "Reference", field: "Reference" },
-        { id: "Allele", name: "Allele", field: "Allele" },
-        { id: "Length", name: "Length", field: "Length" },
-        { id: "Count", name: "Count", field: "Count" },
-        { id: "Coverage", name: "Coverage", field: "Coverage" },
-        { id: "Frequency", name: "Frequency", field: "Frequency" },
-        {
-            id: "ForwardReverseBalance",
-            name: "Forward Reverse Balance",
-            field: "Forward Reverse Balance",
-        },
-        {
-            id: "AverageQuality",
-            name: "Average Quality",
-            field: "Average Quality",
-        },
-        { id: "GeneName", name: "Gene Name", field: "Gene Name" },
-        {
-            id: "CodingRegionChange",
-            name: "Coding Region Change",
-            field: "Coding Region Change",
-        },
-        {
-            id: "AminoAcidChange",
-            name: "Amino Acid Change",
-            field: "Amino Acid Change",
-        },
-        { id: "ExonNumber", name: "Exon Number", field: "Exon Number" },
-        {
-            id: "TypeOfMutation",
-            name: "Type of Mutation",
-            field: "Type of Mutation",
-        },
-    ];
-
-    console.log("cols mode", GridAutosizeColsMode)
-
-    var options = {
-        enableCellNavigation: true,
-        enableColumnReorder: false,
-        autoSizeColsMode: "FCV",
-    };
+    async function fetchData() {
+        const response = await fetch("http://localhost:8000/biopsy");
+        if (response.status > 400) {
+            console.log("ERR"); // TODO
+            return;
+        }
+        return response.json();
+    }
 
     onMount(async () => {
-        const response = await fetch("http://localhost:8000/dg");
-        const result = await response.json();
-        data = result.dg;
-
-        // Initialize SlickGrid with the retrieved data
-        grid = new SlickGrid("#myGrid", data, columns, options);
-
-        function resize() {
-            grid.resizeCanvas();
-          grid.autosizeColumns();
-            setTimeout(resize, 50);
-        }
-        resize()
+        columns = [
+            { id: "biopsy_id", name: "Biopsy ID", field: "biopsy_id" },
+            // { id: "dg_phir_ids", name: "DG Phir IDs", field: "dg_phir_ids" },
+            { id: "projekt", name: "Project", field: "projekt", editor: TextEditor },
+            { id: "diagnoza", name: "Diagnosis", field: "diagnoza", editor: TextEditor },
+            { id: "onkologicky_kod", name: "Oncology Code", field: "onkologicky_kod", editor: TextEditor },
+            { id: "kod_pojistovna", name: "Insurance Code", field: "kod_pojistovna", editor: TextEditor },
+            { id: "prijem_lmp", name: "Reception LMP", field: "prijem_lmp", editor: TextEditor },
+            { id: "uzavreni_lmp", name: "Closure LMP", field: "uzavreni_lmp", editor: TextEditor },
+            { id: "patient_id", name: "Patient ID", field: "patient_id", editor: TextEditor },
+            { id: "igv_kontrola", name: "IGV Control", field: "igv_kontrola", editor: TextEditor },
+            { id: "medea_zapis", name: "Medea Record", field: "medea_zapis", editor: TextEditor },
+            { id: "sekvenator", name: "Sequencer", field: "sekvenator", editor: TextEditor },
+            { id: "panel_genu", name: "Gene Panel", field: "panel_genu", editor: TextEditor },
+            { id: "procento_nadorovych_bunek", name: "Percentage of Tumor Cells", field: "procento_nadorovych_bunek", editor: TextEditor },
+            { id: "dna_konc_po_1_pcr", name: "DNA Concentration After 1 PCR", field: "dna_konc_po_1_pcr", editor: TextEditor },
+            { id: "dna_prum_pokryti", name: "DNA Average Coverage", field: "dna_prum_pokryti", editor: TextEditor },
+            { id: "dna_tmb", name: "DNA TMB", field: "dna_tmb", editor: TextEditor },
+            { id: "dna_msi", name: "DNA MSI", field: "dna_msi", editor: TextEditor },
+            { id: "hrd", name: "HRD", field: "hrd", editor: TextEditor },
+            { id: "genom_build_puvodni", name: "Original Genome Build", field: "genom_build_puvodni", editor: TextEditor }
+        ];
+        rows = await fetchData();
+        rows = rows.map(i => ({id: i.biopsy_id, ...i}));
+        console.log(rows);
+        mounted = true;
     });
 </script>
 
-<div id="myGrid" />
+{#if mounted}
+    <Table {columns} {rows} />
+{/if}
 
-<style>
-    /* Add any custom styling for your table */
-    #myGrid {
-        width: 100%;
-        height: 500px;
-    }
-</style>
