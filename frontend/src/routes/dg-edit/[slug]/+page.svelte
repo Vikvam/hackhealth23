@@ -7,7 +7,10 @@
     export let data;
     let slug = data.slug;
 
-    let dgData;
+    let mounted = false;
+
+    let columns = [];
+    let rows = [];
 
     async function fetchData() {
         const response = await fetch("http://localhost:8000/dg/" + slug);
@@ -18,16 +21,12 @@
         return response.json();
     }
 
-    function renderTable() {
-
-    }
-
     onMount(async () => {
-        // dgData = await fetchData();
-        // console.log("DGData", dgData)
-    })
-
-    const columns = [
+        // const columns = {
+        // TODO
+        // }
+        // const rows = await fetchData();
+        columns = [
         {id: "title", name: "Title", field: "title"},
         {id: "duration", name: "Duration", field: "duration"},
         {id: "%", name: "% Complete", field: "percentComplete", width: 90},
@@ -35,8 +34,8 @@
         {id: "finish", name: "Finish", field: "finish"},
         {id: "effort-driven", name: "Effort Driven", field: "effortDriven", formatter: CheckboxFormatter}
     ];
-    let rows = [];
-    for (let i = 0; i < 50; i++) {
+        rows = [];
+        for (let i = 0; i < 50; i++) {
         rows[i] = {
             id: i,
             title: "Task " + i,
@@ -47,7 +46,8 @@
             effortDriven: (i % 5 == 0)
         };
     }
-
+        mounted = true;
+    })
 </script>
 
 <Label>
@@ -55,7 +55,9 @@
     {slug}
 </Label>
 
-<Table columns={columns} rows={rows} />
+{#if mounted}
+    <Table columns={columns} rows={rows} />
+}{/if}
 
 <style>
     span {
