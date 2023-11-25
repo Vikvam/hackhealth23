@@ -13,7 +13,7 @@
         enableCellNavigation: true,
         enableColumnReorder: false,
         showHeaderRow: true,
-        defaultColumnWidth: 160
+        defaultColumnWidth: 160,
         editable: true,
     };
 
