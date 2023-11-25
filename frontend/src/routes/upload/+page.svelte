@@ -1,31 +1,42 @@
 <script>
     import {goto} from "$app/navigation.js";
-    import {Fileupload, Input, Label, Button, Heading} from "flowbite-svelte";
+    import {Fileupload, Helper, Input, Label, Button, Heading} from "flowbite-svelte";
 
     let id;
-    let file;
+    let filepath;
 
     function uploadFile() {
-        // TODO
-        console.log("POST", file);
-        goto("/dg-edit", {replaceState: false});
+        if (!filepath) return;
+        const fileUpload = document.getElementById("file-upload");
+        const file = fileUpload.files[0];
+        const name = file.name.slice(0, file.name.lastIndexOf('.'));
+        console.log(file);
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("file", file);
+        console.log(formData)
+        fetch(
+            "http://localhost:8000/uploadxlsx",
+            {method: "POST", body: formData, mode: "cors"}
+        ).then(response => console.log(response));
+        // goto("/dg-edit", {replaceState: false});
     }
 </script>
 
 <div>
   <Heading tag="h3" class="space-y-10 mb-4">Insert new biopsy</Heading>
-  <Label class="space-y-4 mb-4">
+  <!--  TODO: validation-->
+  <Label class="space-y-4 mt-4 mb-4">
     <span>Biopsy ID</span>
     <Input bind:value={id} />
   </Label>
-  <Label class="space-y-4 mb-4">
+  <Label class="space-y-4 mt-4 mb-4">
     <span>DG file</span>
-    <Fileupload bind:value={file} />
+    <Fileupload id="file-upload" bind:value={filepath} />
+    <Helper>Excel files</Helper>
+    <Helper>File: {filepath ? filepath : "No file uploaded"}</Helper>
   </Label>
-  <Label class="space-y-4 mb-4">
-    File: {file ? file : "No file uploaded"}
-  </Label>
-  <Button on:click={uploadFile}>Insert into database</Button>
+  <Button on:click={uploadFile} class="mt-4">Insert into database</Button>
 </div>
 
 <style>
