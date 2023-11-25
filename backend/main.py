@@ -27,9 +27,11 @@ isc = ISC()
 
 @app.post("/uploadxlsx/")
 async def upload_xlsx(name: str, file: UploadFile = File(...)):
-    print(name, file)
-
-
+    filepath = Path("uploads") / (name + ".xlsx")      # str(uuid.uuid4())
+    with open(filepath, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    df = pd.read_excel(filepath)
+    print(df)
     return JSONResponse(status_code=200, content={"message": "File uploaded and read into DataFrame successfully"})
 
 
