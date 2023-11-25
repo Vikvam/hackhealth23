@@ -1,19 +1,17 @@
 <script type="module">
     import { onMount } from "svelte";
-    import { SlickGrid, SlickDataView } from "slickgrid";
+    import {SlickGrid, SlickDataView, SlickCellSelectionModel} from "slickgrid";
 
     export let columns;
     export let rows;
 
     let grid;
     let dataView;
-
     let columnFilters = {};
-
-    var options = {
+    let options = {
         enableCellNavigation: true,
-        enableColumnReorder: false,
         showHeaderRow: true,
+        editable: true,
     };
 
     function filterTable(item) {
@@ -42,7 +40,6 @@
                 parent.firstElementChild.focus();
             }, 10)
         }
-        console.log("onFilter", e.target);
     }
 
     function renderTable() {
@@ -50,14 +47,12 @@
         grid = new SlickGrid("#slickgrid", dataView, columns, options);
 
         dataView.onRowCountChanged.subscribe(function (e, args) {
-            console.log("onRowCountChanged");
             grid.updateRowCount();
             grid.render();
         });
 
         dataView.onRowsChanged.subscribe(function (e, args) {
             //remove first row from args.rows
-            console.log("onRowsChanged", args.rows);
             grid.invalidateRows(args.rows);
             grid.render();
         });
@@ -79,7 +74,11 @@
             }
         });
 
+
+        grid.setSelectionModel(new SlickCellSelectionModel());
+
         grid.init();
+        grid.setOptions({autoEdit: true, autoCommitEdit: true});
 
         dataView.beginUpdate();
         dataView.setItems(rows);
