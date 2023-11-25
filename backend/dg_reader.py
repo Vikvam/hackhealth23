@@ -10,16 +10,20 @@ def add_extension(element_name, possible_keys, row_dict, json_data):
         if key in row_dict:
             found_value = row_dict[key]
             break
+    if element_name == "Type of mutation":
+        found_value = found_value.split()[0]
+    elif element_name == "Gene name":
+        found_value = found_value.split('_')[0]
     json_data["extension"].append({"url": f"https://{element_name}.com".replace(" ", ""), "valueString": str(found_value)})
 
 def read_dg_excel(path):
     # Read all sheets of the Excel file into a dictionary of DataFrames
     all_sheets = pd.read_excel(path, sheet_name=None)
     jsons = []
-
     # Iterate over each sheet
     for sheet_name, df in all_sheets.items():
-        # Convert each row to a dictionary and append it to a list
+        if not sheet_name.startswith("Variants"):
+            continue
         df = df.replace({np.nan: None})
         data = []
         for index, row in df.iterrows():
