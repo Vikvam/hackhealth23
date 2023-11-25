@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { SlickGrid, CheckboxFormatter } from "slickgrid";
+    import { SlickGrid, CheckboxFormatter, GridAutosizeColsMode } from "slickgrid";
 
     let data = [];
     let grid;
@@ -44,9 +44,12 @@
         },
     ];
 
+    console.log("cols mode", GridAutosizeColsMode)
+
     var options = {
         enableCellNavigation: true,
         enableColumnReorder: false,
+        autoSizeColsMode: "FCV",
     };
 
     onMount(async () => {
@@ -56,6 +59,13 @@
 
         // Initialize SlickGrid with the retrieved data
         grid = new SlickGrid("#myGrid", data, columns, options);
+
+        function resize() {
+            grid.resizeCanvas();
+          grid.autosizeColumns();
+            setTimeout(resize, 50);
+        }
+        resize()
     });
 </script>
 

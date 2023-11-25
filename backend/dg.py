@@ -1,3 +1,4 @@
+from isc import ISC
 from phir import get_extension_value
 
 
@@ -71,3 +72,13 @@ class DG:
             "Exon Number": self.exon_number,
             "Type of Mutation": self.type_of_mutation
         }
+
+    @staticmethod
+    def get_for_biopsy_id(isc: "ISC", biopsy_id: str) -> list["DG"]:
+        observations = isc.get("/Observation")
+        dgs = []
+        for observation in observations["entry"]:
+            dg = DG.from_fhir(observation)
+            if dg.biopsy_id == biopsy_id:
+                dgs.append(dg)
+        return dgs

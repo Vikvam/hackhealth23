@@ -28,16 +28,32 @@ isc = ISC()
 
 @app.post("/uploadxlsx/")
 async def upload_xlsx(name: str, file: UploadFile = File(...)):
-    filepath = Path("uploads") / (name + ".xlsx")      # str(uuid.uuid4())
+    filepath = Path("uploads") / (name + ".xlsx")  # str(uuid.uuid4())
     with open(filepath, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     jsons = read_dg_excel(filepath)
     for payload in jsons:
         payload["extension"].append({"url": "https://BiopsyID.com", "valueString": name})
         print("upload status code", isc.post("/Observation", payload))
+
+    # insert into additionals
+    dgs = DG.get_for_biopsy_id(isc, name)
+    for dg in dgs:
+        db.create_dg_additional({
+            "phir_id": dg.id,
+            "class": None,
+            "filename": name,
+            "biopsy_id": dg.biopsy_id,
+        })
+
+    db.create_biopsy(db.Biopsy({
+        "biopsy_id": name,
+        "dg_phir_ids": [dg.id for dg in dgs],
+    }))
+
+
+
     return JSONResponse(status_code=200, content={"message": "File uploaded and read into DataFrame successfully"})
-
-
 
 
 @app.post("/upload")
@@ -78,6 +94,7 @@ async def get_dg():
     resp_data = {"dg": [dg.as_json() for dg in dgs]}
     return JSONResponse(status_code=200, content=resp_data)
 
+
 @app.get("/dg/{biopsy_id}")
 async def get_dg_biopsy(biopsy_id: str):
     data = isc.get("/Observation")
@@ -90,10 +107,15 @@ async def get_dg_biopsy(biopsy_id: str):
     resp_data = {"dg": [dg.as_json() for dg in dgs]}
     return JSONResponse(status_code=200, content=resp_data)
 
+
 @app.post("/classify_dg")
 async def classify_dg(phir_id: int, classification: str):
     phir_id = str(phir_id)
     db.classify_dg(phir_id, classification)
+
+@app.get("/biopsy")
+async def get_biopsy():
+    return db.biopsy_table.all()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

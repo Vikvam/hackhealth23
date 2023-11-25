@@ -1,7 +1,7 @@
 <script type="module">
     import {
         SlickGrid,
-        CheckboxFormatter
+        CheckboxFormatter,
     } from "slickgrid";
 
     let grid;
@@ -20,7 +20,7 @@
 
     var options = {
         enableCellNavigation: true,
-        enableColumnReorder: false
+        enableColumnReorder: false,
     };
 
     let data = [];

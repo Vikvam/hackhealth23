@@ -7,11 +7,11 @@ db = TinyDB("db.json")
 #    "phir_id": str,
 #    "class": str, (green, yellow, red)
 #    "filename": str,
-#    "biopsy": Optional[int] (doc_id)
+#    "biopsy_id": str
 # }
 #
 # Biopsy = {
-#   "id": int,
+#   "biopsy_id": str,
 #   "dg": list[int] (phir_id)
 #   "projekt": str,
 #   "diagnoza": str,
@@ -34,20 +34,48 @@ db = TinyDB("db.json")
 # }
 #
 
+BIOPSY_KEYS = [
+    "biopsy_id",
+    "dg_phir_ids",
+    "projekt",
+    "diagnoza",
+    "onkologicky_kod",
+    "kod_pojistovna",
+    "prijem_lmp",
+    "uzavreni_lmp",
+    "patient_id",
+    "igv_kontrola",
+    "medea_zapis",
+    "sekvenator",
+    "panel_genu",
+    "procento_nadorovych_bunek",
+    "dna_konc_po_1_pcr",
+    "dna_prum_pokryti",
+    "dna_tmb",
+    "dna_msi",
+    "hrd",
+    "genom_build_puvodni"
+]
+
+
+class Biopsy:
+    def __init__(self, data: dict):
+        for key in BIOPSY_KEYS:
+            setattr(self, key, data.get(key, None))
+
+    def as_json(self):
+        json_data = {}
+        for key in BIOPSY_KEYS:
+            json_data[key] = getattr(self, key)
+        return json_data
+
+
 biopsy_table = db.table("biopsy")
 dg_additionals_table = db.table("dg_class")
 
 
-def create_biopsy(biopsy: dict, dg_phir_ids: list[str]):
-    doc_ids = []
-    DG_Add = Query()
-    for phir_id in dg_phir_ids:
-        search_results = db.search(DG_Add.phir_id == phir_id)
-        assert len(search_results) != 0, f"Phir id {phir_id} not found in database"
-        doc_ids.append(search_results[0].doc_id)
-
-    biopsy["dg"] = doc_ids
-    biopsy_table.insert(biopsy)
+def create_biopsy(biopsy: Biopsy):
+    biopsy_table.insert(biopsy.as_json())
 
 
 def create_dg_additional(dg_additional: dict):
