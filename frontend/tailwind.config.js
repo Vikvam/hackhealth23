@@ -1,7 +1,9 @@
+import plugin from "tailwindcss/plugin.js";
+
 const config = {
   content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'],
 
-  plugins: [require('flowbite/plugin')],
+  plugins: [plugin],
 
   darkMode: 'class',
 
@@ -26,4 +28,4 @@ const config = {
   }
 };
 
-module.exports = config;
+export default config;

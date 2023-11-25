@@ -1,15 +1,22 @@
 <script type="module">
-    import {SlickGrid} from "slickgrid";
+    import {
+        SlickGrid,
+        CheckboxFormatter
+    } from "slickgrid";
 
-    var grid;
-    var columns = [
+    let grid;
+    // let dataView = new DataView({inlineFilters: true});
+
+    const columns = [
         {id: "title", name: "Title", field: "title"},
         {id: "duration", name: "Duration", field: "duration"},
         {id: "%", name: "% Complete", field: "percentComplete", width: 90},
         {id: "start", name: "Start", field: "start"},
         {id: "finish", name: "Finish", field: "finish"},
-        {id: "effort-driven", name: "Effort Driven", field: "effortDriven", width: 90}
+        {id: "effort-driven", name: "Effort Driven", field: "effortDriven", formatter: CheckboxFormatter}
     ];
+
+    console.log(CheckboxFormatter)
 
     var options = {
         enableCellNavigation: true,
@@ -28,11 +35,11 @@
         };
     }
 
-    function renderSlickGrid() {
+    function renderTable() {
         grid = new SlickGrid("#slickgrid", data, columns, options);
     }
 </script>
 
-<div id="slickgrid" style="width:600px;height:500px;"></div>
+<div id="slickgrid" style="width:100%;height:500px;"></div>
 
-<svelte:window on:load={renderSlickGrid}></svelte:window>
+<svelte:window on:load={renderTable}></svelte:window>
