@@ -1,9 +1,6 @@
 <script type="module">
     import { onMount } from "svelte";
-    import {
-        SlickGrid,
-        SlickDataView
-    } from "slickgrid";
+    import { SlickGrid, SlickDataView } from "slickgrid";
 
     export let columns;
     export let rows;
@@ -11,7 +8,7 @@
     let grid;
     let dataView;
 
-    let columnFilters = {}
+    let columnFilters = {};
 
     var options = {
         enableCellNavigation: true,
@@ -23,7 +20,12 @@
         for (var columnId in columnFilters) {
             if (columnId !== undefined && columnFilters[columnId] !== "") {
                 var c = grid.getColumns()[grid.getColumnIndex(columnId)];
-                if (item[c.field] != columnFilters[columnId]) return false;
+                var fieldValue = String(item[c.field]).toLowerCase(); // Convert to lowercase for case-insensitive comparison
+                var filterValue = columnFilters[columnId].toLowerCase(); // Convert to lowercase for case-insensitive comparison
+
+                if (!fieldValue.includes(filterValue)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -33,10 +35,10 @@
         const inputFilter = e.target;
         const columnId = inputFilter.dataset.columnid;
         if (columnId != null) {
-            columnFilters[columnId] = (e.target.value || '').trim();
+            columnFilters[columnId] = (e.target.value || "").trim();
             dataView.refresh();
         }
-        console.log("onFilter", e.target)
+        console.log("onFilter", e.target);
     }
 
     function renderTable() {
@@ -61,11 +63,11 @@
             headerRow.addEventListener("keyup", onFilter);
             for (let i = 0; i < headerRow.children.length; i++) {
                 const columnId = columns.at(i).id;
-                const filterInput = document.createElement('input');
-                filterInput.className = 'filter';
-                filterInput.placeholder = 'Filter...';
+                const filterInput = document.createElement("input");
+                filterInput.className = "filter";
+                filterInput.placeholder = "Filter...";
                 filterInput.dataset.columnid = columnId;
-                filterInput.value = columnFilters[columnId] || '';
+                filterInput.value = columnFilters[columnId] || "";
                 const headerCell = headerRow.childNodes[i];
                 headerCell.innerHTML = "";
                 headerCell.appendChild(filterInput);
@@ -82,8 +84,7 @@
 
     onMount(async () => {
         renderTable();
-    })
+    });
 </script>
 
-<div id="slickgrid" style="width:100%;height:500px;"></div>
-
+<div id="slickgrid" style="width:100%;height:500px;" />
