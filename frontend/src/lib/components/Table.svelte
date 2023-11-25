@@ -14,6 +14,7 @@
         enableCellNavigation: true,
         enableColumnReorder: false,
         showHeaderRow: true,
+        defaultColumnWidth: 160
     };
 
     function filterTable(item) {

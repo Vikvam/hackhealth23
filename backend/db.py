@@ -57,6 +57,10 @@ BIOPSY_KEYS = [
     "genom_build_puvodni"
 ]
 
+biopsy_table = db.table("biopsy")
+dg_additionals_table = db.table("dg_class")
+
+
 
 class Biopsy:
     def __init__(self, data: dict):
@@ -71,11 +75,11 @@ class Biopsy:
 
     @staticmethod
     def from_id(id: str):
-        return Biopsy(db.get(Query().biopsy_id == id))
+        return Biopsy(biopsy_table.get(Query().biopsy_id == id))
 
+    def update_db(self):
+        biopsy_table.update(self.as_json(), Query().biopsy_id == self.biopsy_id)
 
-biopsy_table = db.table("biopsy")
-dg_additionals_table = db.table("dg_class")
 
 
 def create_biopsy(biopsy: Biopsy):

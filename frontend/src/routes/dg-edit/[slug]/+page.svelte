@@ -3,6 +3,7 @@
     import { Label } from "flowbite-svelte";
     import { CheckboxFormatter } from "slickgrid";
     import Table from "$lib/components/Table.svelte";
+    import { SelectCellEditor, SelectCellFormatter} from "$lib/dropdown.ts";
 
     export let data;
     let slug = data.slug;
@@ -21,8 +22,16 @@
         return response.json();
     }
 
+    let severityList = {
+        "1": "Low",
+        "2": "Medium",
+        "3": "High",
+    };
+
     onMount(async () => {
         columns = [
+            {id: "Severity", name: "Severity", field: "Severity", editor: SelectCellEditor,
+                formatter: SelectCellFormatter, options: severityList},
             {id: "id", name: "id", field: "id"},
             {id: "Biopsy ID", name: "Biopsy ID", field: "Biopsy ID"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},

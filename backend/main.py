@@ -119,7 +119,12 @@ async def get_biopsy():
 
 @app.post("/biopsy/{biopsy_id}")
 async def post_biopsy(biopsy_id: str, data: dict):
-    biopsy = db.Biopsy(data)
+    biopsy = db.Biopsy.from_id(biopsy_id)
+    for key in data:
+        assert key in db.BIOPSY_KEYS, f"Unknown key {key} used in biopsy update"
+        setattr(biopsy, key, data[key])
+    biopsy.update_db()
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
