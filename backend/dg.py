@@ -2,9 +2,10 @@ from phir import get_extension_value
 
 
 class DG:
-    def __init__(self, chromosome, region, type, reference, allele, length, count, coverage, frequency,
+    def __init__(self, id, chromosome, region, type, reference, allele, length, count, coverage, frequency,
                  forward_reverse_balance, average_quality, gene_name, coding_region_change, amino_acid_change,
                  exon_number, type_of_mutation):
+        self.id = id
         self.chromosome = chromosome
         self.region = region
         self.type = type
@@ -24,7 +25,10 @@ class DG:
 
     @staticmethod
     def from_fhir(fhir: dict):
+        fhir = fhir["resource"]
+        id = fhir["id"]
         dg = DG(
+            id,
             get_extension_value(fhir, "chromosome"),
             get_extension_value(fhir, "region"),
             get_extension_value(fhir, "type"),
@@ -46,6 +50,7 @@ class DG:
 
     def as_json(self):
         return {
+            "id": self.id,
             "Chromosome": self.chromosome,
             "Region": self.region,
             "Type": self.type,

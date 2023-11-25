@@ -11,6 +11,7 @@ import pandas as pd
 from dg import DG
 from dg_reader import read_dg_excel
 from isc import ISC
+import db
 
 app = FastAPI()
 isc = ISC()
@@ -60,10 +61,14 @@ async def get_dg() -> dict[str, list[dict[str, str]]]:
     data = isc.get("/Observation")
     dgs = []
     for dg_data in data["entry"]:
-        dgs.append(DG.from_fhir(dg_data["resource"]))
+        dgs.append(DG.from_fhir(dg_data))
 
     return {"dg": [dg.as_json() for dg in dgs]}
 
+@app.post("/classify_dg")
+async def classify_dg(phir_id: int, classification: str):
+    phir_id = str(phir_id)
+    db.classify_dg(phir_id, classification)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
