@@ -4,7 +4,7 @@ function onchange() {
 
 export function SelectCellFormatter(row, cell, value, columnDef, dataContext) {
     console.log("value", value)
-    return `<select class='editor-select' onchange="() => {console.log('bla')}">
+    return `<select class='editor-select'>
                 <option value=''>Severity...</option>
                 <option value='Benign'>Benign</option>
                 <option value='Unknown'>Unknown</option>

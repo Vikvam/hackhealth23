@@ -2,8 +2,13 @@
     import { onMount } from "svelte";
     import {SlickGrid, SlickDataView, SlickCellSelectionModel, SlickGridPager} from "slickgrid";
 
+    export let tableId = "slickgrid";
+    export let heightStyle = "500px"
+    export let usePager = true;
     export let columns;
     export let rows;
+
+
     export let onCellChange = () => {};
 
     let grid;
@@ -19,11 +24,11 @@
     };
 
     function filter(item) {
-        for (var columnId in columnFilters) {
+        for (let columnId in columnFilters) {
             if (columnId !== undefined && columnFilters[columnId] !== "") {
-                var c = grid.getColumns()[grid.getColumnIndex(columnId)];
-                var fieldValue = String(item[c.field]).toLowerCase(); // Convert to lowercase for case-insensitive comparison
-                var filterValue = columnFilters[columnId].toLowerCase(); // Convert to lowercase for case-insensitive comparison
+                let c = grid.getColumns()[grid.getColumnIndex(columnId)];
+                let fieldValue = String(item[c.field]).toLowerCase(); // Convert to lowercase for case-insensitive comparison
+                let filterValue = columnFilters[columnId].toLowerCase(); // Convert to lowercase for case-insensitive comparison
 
                 if (!fieldValue.includes(filterValue)) {
                     return false;
@@ -48,7 +53,7 @@
 
     function renderTable() {
         dataView = new SlickDataView({});
-        grid = new SlickGrid("#slickgrid", dataView, columns, options);
+        grid = new SlickGrid(`#${"table" + tableId}`, dataView, columns, options);
 
         dataView.onRowCountChanged.subscribe(function (e, args) {
             grid.updateRowCount();
@@ -85,8 +90,10 @@
         grid.init();
         grid.setOptions({autoEdit: true, autoCommitEdit: true});
 
-        let pager = new SlickGridPager(dataView, grid, "#pager");
-
+        let pager;
+        if (usePager) {
+            pager = new SlickGridPager(dataView, grid, `#${"table" + tableId}`);
+        }
         dataView.beginUpdate();
         dataView.setItems(rows);
         dataView.setFilter(filter);
@@ -102,5 +109,7 @@
     });
 </script>
 
-<div id="slickgrid" style="width:100%;height:500px;" />
-<div id="pager" style="width:100%;"></div>
+<div id={"table" + tableId} style="width:100%;height:{heightStyle};" />
+{#if usePager}
+    <div id={"pager" + tableId} style="width:100%;"></div>
+{/if}

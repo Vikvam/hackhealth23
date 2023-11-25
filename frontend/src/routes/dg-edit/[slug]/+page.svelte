@@ -29,8 +29,7 @@
 
     onMount(async () => {
         columns = [
-            {id: "Severity", name: "Severity", field: "Severity", editor: SelectCellEditor,
-                formatter: SelectCellFormatter, options: severityList},
+            {id: "Severity", name: "Severity", field: "Severity",  formatter: SelectCellFormatter, options: severityList},
             {id: "id", name: "id", field: "id"},
             {id: "Biopsy ID", name: "Biopsy ID", field: "Biopsy ID"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},
