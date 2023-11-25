@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 
 import uvicorn
@@ -30,8 +31,9 @@ async def upload_xlsx(name: str, file: UploadFile = File(...)):
     filepath = Path("uploads") / (name + ".xlsx")      # str(uuid.uuid4())
     with open(filepath, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    df = pd.read_excel(filepath)
-    print(df)
+    jsons = read_dg_excel(filepath)
+    for payload in jsons:
+        print("upload status code", isc.post("/Observation", payload))
     return JSONResponse(status_code=200, content={"message": "File uploaded and read into DataFrame successfully"})
 
 
