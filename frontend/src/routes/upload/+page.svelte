@@ -6,18 +6,17 @@
     let filepath;
 
     function uploadFile() {
-        if (!filepath) return;
         const fileUpload = document.getElementById("file-upload");
+        if (! fileUpload.files) return;
         const file = fileUpload.files[0];
         const name = file.name.slice(0, file.name.lastIndexOf('.'));
-        console.log(file);
         const formData = new FormData();
         formData.append("name", name);
         formData.append("file", file);
-        console.log(formData)
+        console.log(formData);
         fetch(
-            "http://localhost:8000/uploadxlsx",
-            {method: "POST", body: formData, mode: "cors"}
+            "http://localhost:8000/uploadxlsx/?name=" + name,
+            {method: "POST", body: formData, mode: "cors"},
         ).then(response => console.log(response));
         // goto("/dg-edit", {replaceState: false});
     }
