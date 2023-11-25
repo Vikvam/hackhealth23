@@ -3,6 +3,7 @@ import uuid
 
 import uvicorn
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import shutil
 from pathlib import Path
@@ -14,16 +15,20 @@ from isc import ISC
 import db
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 isc = ISC()
 
 
 @app.post("/uploadxlsx/")
-async def upload_xlsx(file: UploadFile = File(...)):
-    file_location = Path("uploads") / str(uuid.uuid4())
-    with open(file_location, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+async def upload_xlsx(name: str, file: UploadFile = File(...)):
+    print(name, file)
 
-    df = pd.read_excel("../EHH23_Icebreaker_AZ23/DG/DG-14013-23-1A_S1 (paired)_Filtered_variants_DNA.xlsx")
 
     return JSONResponse(status_code=200, content={"message": "File uploaded and read into DataFrame successfully"})
 
