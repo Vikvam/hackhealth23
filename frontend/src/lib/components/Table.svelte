@@ -1,6 +1,6 @@
 <script type="module">
     import { onMount } from "svelte";
-    import {SlickGrid, SlickDataView, SlickCellSelectionModel} from "slickgrid";
+    import {SlickGrid, SlickDataView, SlickCellSelectionModel, SlickGridPager} from "slickgrid";
 
     export let columns;
     export let rows;
@@ -83,6 +83,8 @@
         grid.init();
         grid.setOptions({autoEdit: true, autoCommitEdit: true});
 
+        let pager = new SlickGridPager(dataView, grid, "#pager");
+
         dataView.beginUpdate();
         dataView.setItems(rows);
         dataView.setFilter(filterTable);
@@ -99,3 +101,4 @@
 </script>
 
 <div id="slickgrid" style="width:100%;height:500px;" />
+<div id="pager" style="width:100%;"></div>
