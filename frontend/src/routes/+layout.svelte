@@ -6,4 +6,15 @@
 
 <Navigation/>
 
-<slot />
+<div>
+    <slot />
+</div>
+
+
+<style>
+    div {
+        display: grid;
+        place-items: center;
+        padding: 4rem;
+    }
+</style>
