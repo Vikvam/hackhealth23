@@ -1,0 +1,17 @@
+{
+  "Chromosome" : ["Chromosome"],
+  "Region" : ["Region"],
+  "Type" : ["Type"],
+  "Reference" : ["Reference"],
+  "Allele" : ["Allele"],
+  "Length" : ["Length"],
+  "Count" : ["Count"],
+  "Coverage" : ["Coverage"],
+  "Frequency" : ["Frequency"],
+  "Forward/reverse balance" : ["Forward/reverse balance"],
+  "Average quality" : ["Average quality"],
+  "Gene name" : ["TMBv4_GRCh38", "TMBv4 GRCh38"],
+  "Coding region change" : ["Coding region change"],
+  "Amino acid change" : ["Amino acid change"],
+  "Exon Number" : ["Exon Number"]
+}
