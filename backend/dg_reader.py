@@ -26,7 +26,7 @@ def read_dg_excel(path):
             data.append(row.to_dict())
 
         for row_dict in data:
-            json_data = {"resourceType": "Observation", "extension": []}
+            json_data = {"resourceType": "Observation", "extension": [], "code": {"text": "placeholder"}}
             with open('config.json', 'r') as config_file:
                 config_data = json.load(config_file)
                 for key, aliases in config_data.items():

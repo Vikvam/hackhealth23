@@ -2,7 +2,7 @@ import requests
 
 
 class ISC:
-    API_KEY = "ew2DuI4xtb2VrsMhTaFNc2Coqm1EImvS58emoGRT"
+    API_KEY = "DFA5QxMVgg1QFzD385wwY6Lkj9t4jsST36A2BEQi"
     url = "https://fhir.pzyj0rab8imc.workload-nonprod-fhiraas.isccloud.io"
 
     def get(self, endpoint):
@@ -10,12 +10,12 @@ class ISC:
         response = requests.get(
             self.url + endpoint,
             headers={"x-api-key": self.API_KEY})
-        print("Response", response)
+        print("Response", response.json())
         return response.json()
 
     def post(self, endpoint, payload):
         if isinstance(payload, str):
-            return requests.post(
+            data = requests.post(
                 self.url + endpoint,
                 data=payload,
                 headers={
@@ -23,9 +23,10 @@ class ISC:
                     "accept": "application/fhir+json",
                     "Content-Type": "application/fhir+json",
                 }
-            ).json()
+            )
+            return data.status_code
         elif isinstance(payload, dict):
-            return requests.post(
+            data = requests.post(
                 self.url + endpoint,
                 json=payload,
                 headers={
@@ -33,6 +34,7 @@ class ISC:
                     "accept": "application/fhir+json",
                     "Content-Type": "application/fhir+json",
                 }
-            ).json()
+            )
+            return data.status_code
         else:
             assert False, f"Invalid type for payload {type(payload)}"
