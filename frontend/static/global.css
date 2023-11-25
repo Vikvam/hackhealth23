@@ -1,0 +1,18 @@
+:root {
+    --clr-light-primary: white;
+    --clr-light-secondary: #c9d5de;
+    /* --clr-light-secondary: #edd6c5; */
+    --clr-dark-primary: #010b33;
+    --clr-accent: #d59e68;
+    --clr-shadow: black;
+
+    --nav-height: 4.5rem;
+
+    --padding-side: 5vw;
+
+    font-size: 1.1rem;
+}
+
+:focus {
+    outline: 1px solid var(--clr-dark-primary);
+}
