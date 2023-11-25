@@ -14,5 +14,5 @@
   "Coding region change" : ["Coding region change"],
   "Amino acid change" : ["Amino acid change"],
   "Exon Number" : ["Exon Number"],
-  "Type of mutation" : ["Origin tracks"]
+  "Type of mutation" : ["Origin tracks", "Origin Tracks"]
 }
