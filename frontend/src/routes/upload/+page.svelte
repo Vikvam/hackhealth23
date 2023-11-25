@@ -13,7 +13,6 @@
         const formData = new FormData();
         formData.append("name", name);
         formData.append("file", file);
-        console.log(formData);
         fetch(
             "http://localhost:8000/uploadxlsx/?name=" + id,
             {method: "POST", body: formData, mode: "cors"},
