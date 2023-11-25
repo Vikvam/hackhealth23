@@ -10,7 +10,6 @@ class ISC:
         response = requests.get(
             self.url + endpoint,
             headers={"x-api-key": self.API_KEY})
-        print("Response", response.json())
         return response.json()
 
     def post(self, endpoint, payload):

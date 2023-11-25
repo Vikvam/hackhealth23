@@ -8,6 +8,9 @@ def get_extension_obj(data, ext_name: str):
     print(f"WARN: {ext_name} not found in fhir data")
 
 def get_extension_value(data, ext_name: str):
+    ext_obj = get_extension_obj(data, ext_name)
+    if ext_obj is None:
+        return "None"
     return get_extension_obj(data, ext_name)["valueString"]
 
 

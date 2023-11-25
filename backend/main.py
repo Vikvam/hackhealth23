@@ -33,8 +33,11 @@ async def upload_xlsx(name: str, file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
     jsons = read_dg_excel(filepath)
     for payload in jsons:
+        payload["extension"].append({"url": "https://BiopsyID.com", "valueString": name})
         print("upload status code", isc.post("/Observation", payload))
     return JSONResponse(status_code=200, content={"message": "File uploaded and read into DataFrame successfully"})
+
+
 
 
 @app.post("/upload")
@@ -66,13 +69,26 @@ async def post_patients():
 
 
 @app.get("/dg")
-async def get_dg() -> dict[str, list[dict[str, str]]]:
+async def get_dg():
     data = isc.get("/Observation")
     dgs = []
     for dg_data in data["entry"]:
         dgs.append(DG.from_fhir(dg_data))
 
-    return {"dg": [dg.as_json() for dg in dgs]}
+    resp_data = {"dg": [dg.as_json() for dg in dgs]}
+    return JSONResponse(status_code=200, content=resp_data)
+
+@app.get("/dg/{biopsy_id}")
+async def get_dg_biopsy(biopsy_id: str):
+    data = isc.get("/Observation")
+    dgs = []
+    for dg_data in data["entry"]:
+        dg = DG.from_fhir(dg_data)
+        if dg.biopsy_id == biopsy_id:
+            dgs.append(dg)
+
+    resp_data = {"dg": [dg.as_json() for dg in dgs]}
+    return JSONResponse(status_code=200, content=resp_data)
 
 @app.post("/classify_dg")
 async def classify_dg(phir_id: int, classification: str):

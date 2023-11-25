@@ -15,7 +15,7 @@
         formData.append("file", file);
         console.log(formData);
         fetch(
-            "http://localhost:8000/uploadxlsx/?name=" + name,
+            "http://localhost:8000/uploadxlsx/?name=" + id,
             {method: "POST", body: formData, mode: "cors"},
         ).then(response => console.log(response));
         // goto("/dg-edit", {replaceState: false});
