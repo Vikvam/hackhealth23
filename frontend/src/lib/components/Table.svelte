@@ -4,6 +4,7 @@
 
     export let columns;
     export let rows;
+    export let onCellChange = () => {};
 
     let grid;
     let dataView;
@@ -17,7 +18,7 @@
         editable: true,
     };
 
-    function filterTable(item) {
+    function filter(item) {
         for (var columnId in columnFilters) {
             if (columnId !== undefined && columnFilters[columnId] !== "") {
                 var c = grid.getColumns()[grid.getColumnIndex(columnId)];
@@ -32,7 +33,7 @@
         return true;
     }
 
-    function onFilter(e) {
+    function onHeaderRowChange(e) {
         const inputFilter = e.target;
         const parent = inputFilter.parentNode;
         const columnId = inputFilter.dataset.columnid;
@@ -62,8 +63,8 @@
 
         grid.onRendered.subscribe((e) => {
             let headerRow = grid.getHeaderRow();
-            headerRow.addEventListener("change", onFilter);
-            headerRow.addEventListener("keyup", onFilter);
+            headerRow.addEventListener("change", onHeaderRowChange);
+            headerRow.addEventListener("keyup", onHeaderRowChange);
             for (let i = 0; i < headerRow.children.length; i++) {
                 const columnId = columns.at(i).id;
                 const filterInput = document.createElement("input");
@@ -77,6 +78,7 @@
             }
         });
 
+        grid.onCellChange.subscribe((e, args) => onCellChange(e, args));
 
         grid.setSelectionModel(new SlickCellSelectionModel());
 
@@ -85,7 +87,7 @@
 
         dataView.beginUpdate();
         dataView.setItems(rows);
-        dataView.setFilter(filterTable);
+        dataView.setFilter(filter);
         dataView.endUpdate();
 
         setTimeout(() => {
