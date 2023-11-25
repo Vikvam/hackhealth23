@@ -78,10 +78,3 @@
     <Table {columns} {rows} />
 {/if}
 
-<style>
-    /* Add any custom styling for your table */
-    #myGrid {
-        width: 100%;
-        height: 500px;
-    }
-</style>
