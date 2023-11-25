@@ -31,10 +31,14 @@
 
     function onFilter(e) {
         const inputFilter = e.target;
+        const parent = inputFilter.parentNode;
         const columnId = inputFilter.dataset.columnid;
         if (columnId != null) {
             columnFilters[columnId] = (e.target.value || '').trim();
             dataView.refresh();
+            setTimeout(() => {
+                parent.firstElementChild.focus();
+            }, 10)
         }
         console.log("onFilter", e.target)
     }
@@ -50,7 +54,8 @@
         });
 
         dataView.onRowsChanged.subscribe(function (e, args) {
-            console.log("onRowsChanged");
+            //remove first row from args.rows
+            console.log("onRowsChanged", args.rows);
             grid.invalidateRows(args.rows);
             grid.render();
         });
