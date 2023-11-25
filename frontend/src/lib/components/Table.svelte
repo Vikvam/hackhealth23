@@ -85,6 +85,10 @@
         dataView.setItems(rows);
         dataView.setFilter(filterTable);
         dataView.endUpdate();
+
+        setTimeout(() => {
+            grid.resizeCanvas();
+        }, 10);
     }
 
     onMount(async () => {

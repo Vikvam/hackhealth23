@@ -69,6 +69,10 @@ class Biopsy:
             json_data[key] = getattr(self, key)
         return json_data
 
+    @staticmethod
+    def from_id(id: str):
+        return Biopsy(db.get(Query().biopsy_id == id))
+
 
 biopsy_table = db.table("biopsy")
 dg_additionals_table = db.table("dg_class")

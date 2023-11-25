@@ -51,8 +51,6 @@ async def upload_xlsx(name: str, file: UploadFile = File(...)):
         "dg_phir_ids": [dg.id for dg in dgs],
     }))
 
-
-
     return JSONResponse(status_code=200, content={"message": "File uploaded and read into DataFrame successfully"})
 
 
@@ -113,9 +111,15 @@ async def classify_dg(phir_id: int, classification: str):
     phir_id = str(phir_id)
     db.classify_dg(phir_id, classification)
 
+
 @app.get("/biopsy")
 async def get_biopsy():
     return db.biopsy_table.all()
+
+
+@app.post("/biopsy/{biopsy_id}")
+async def post_biopsy(biopsy_id: str, data: dict):
+    biopsy = db.Biopsy(data)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
