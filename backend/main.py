@@ -8,6 +8,7 @@ import shutil
 from pathlib import Path
 import pandas as pd
 
+from dg import DG
 from dg_reader import read_dg_excel
 from isc import ISC
 
@@ -34,9 +35,11 @@ async def upload_test():
         print("upload status code", isc.post("/Observation", payload))
     return 200
 
+
 @app.get("/observations")
 async def read_obs():
     return isc.get("/Observation")
+
 
 @app.get("/patients")
 async def get_patients():
@@ -50,6 +53,16 @@ async def post_patients():
         "name": [{"family": "Smith"}]
     })
     return True
+
+
+@app.get("/dg")
+async def get_dg() -> dict[str, list[dict[str, str]]]:
+    data = isc.get("/Observation")
+    dgs = []
+    for dg_data in data["entry"]:
+        dgs.append(DG.from_fhir(dg_data["resource"]))
+
+    return {"dg": [dg.as_json() for dg in dgs]}
 
 
 if __name__ == "__main__":
