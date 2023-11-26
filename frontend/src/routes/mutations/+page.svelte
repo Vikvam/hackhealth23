@@ -61,6 +61,6 @@
 </script>
 
 {#if mounted}
-    <Heading tag="h3">Variations</Heading>
+    <Heading tag="h3" class="mb-4">Variations</Heading>
     <Table {columns} {rows} />
 {/if}

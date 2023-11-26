@@ -58,7 +58,7 @@
 </script>
 
 {#if mounted}
-    <Heading tag="h3">CLC</Heading>
+    <Heading tag="h3" class="mb-4">CLC</Heading>
     <Table {columns} {rows} {onCellChange} />
 {/if}
 
