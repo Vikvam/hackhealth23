@@ -23,7 +23,7 @@
 
     onMount(async () => {
         columns = [
-            {id: "Severity", name: "Severity", field: "Severity", formatter: dropdownFormatter, editor: dropdownEditor},
+            {id: "Severity", name: "Severity", field: "Severity", editor: dropdownEditor},
             // {id: "id", name: "id", field: "id"},
             {id: "Biopsy ID", name: "Biopsy ID", field: "Biopsy ID"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},
