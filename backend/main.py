@@ -113,9 +113,8 @@ async def get_dg_biopsy(biopsy_id: str):
 
 
 @app.post("/classify_dg")
-async def classify_dg(fhir_id: int, classification: str):
-    phir_id = str(fhir_id)
-    db.classify_dg(phir_id, classification)
+async def classify_dg(classification: str, fhir_id: str):
+    db.classify_dg(fhir_id, classification)
 
 
 @app.get("/biopsy")

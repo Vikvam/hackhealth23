@@ -23,10 +23,11 @@
     function onCellChange(args) {
         const fhir_id = args.item["id"];
         const column = args.column.field; // Severity, classification
-        const change = {[column]: args.item[column], fhir_id: fhir_id};
+        // const change = {[column]: args.item[column], fhir_id: fhir_id};
+        // console.log(change)
         fetch(
-            "http://localhost:8000/classify_dg/",
-            {method: "POST", body: JSON.stringify(change), mode: "cors", headers: {"Content-Type": "application/json"}},
+            "http://localhost:8000/classify_dg/?fhir_id=" + fhir_id + "&" + "classification=" + args.item[column],
+            {method: "POST", body: JSON.stringify({}), mode: "cors", headers: {"Content-Type": "application/json"}},
         ).then(response => console.log(response));
     }
 
@@ -51,7 +52,7 @@
             $select.id = args.item.id;
             $select.addEventListener("change", (e) => {
                 args.item[args.column.field] = $select.value;
-                // console.log("?", args)
+                console.log(args.container.offsetParent);
                 onCellChange(args);
             })
             insertOptions($select);
