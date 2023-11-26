@@ -1,6 +1,6 @@
 <script type="module">
     import { onMount } from "svelte";
-    import {SlickGrid, SlickDataView, SlickCellSelectionModel} from "slickgrid";
+    import {SlickGrid, SlickDataView, SlickGridPager, SlickCellSelectionModel} from "slickgrid";
 
     export let columns;
     export let rows;
