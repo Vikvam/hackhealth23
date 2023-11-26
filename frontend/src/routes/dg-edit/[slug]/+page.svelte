@@ -128,7 +128,7 @@
 </script>
 
 <Label>
-    <span>Biopsy ID:</span>
+    <span class="mb-4">Biopsy ID:</span>
     {slug}
 </Label>
 
