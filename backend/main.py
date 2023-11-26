@@ -108,13 +108,13 @@ async def get_dg_biopsy(biopsy_id: str):
 
     adds = [dg.find_additionals(db.dg_additionals_table) for dg in dgs]
 
-    resp_data = {"dg": [{**dg.as_json(), "class": adds[i]["class"]} for i, dg in enumerate(dgs)]}
+    resp_data = {"dg": [{**dg.as_json(), "classification": adds[i]["class"]} for i, dg in enumerate(dgs)]}
     return JSONResponse(status_code=200, content=resp_data)
 
 
 @app.post("/classify_dg")
-async def classify_dg(phir_id: int, classification: str):
-    phir_id = str(phir_id)
+async def classify_dg(fhir_id: int, classification: str):
+    phir_id = str(fhir_id)
     db.classify_dg(phir_id, classification)
 
 
