@@ -1,3 +1,6 @@
+from tinydb import Query
+from tinydb import TinyDB
+
 from isc import ISC
 from phir import get_extension_value
 
@@ -82,3 +85,6 @@ class DG:
             if dg.biopsy_id == biopsy_id:
                 dgs.append(dg)
         return dgs
+
+    def find_additionals(self, table: TinyDB):
+        return table.search(Query().phir_id == self.id)[0]
