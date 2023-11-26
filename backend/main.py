@@ -91,7 +91,9 @@ async def get_dg():
     for dg_data in data["entry"]:
         dgs.append(DG.from_fhir(dg_data))
 
-    resp_data = {"dg": [dg.as_json() for dg in dgs]}
+    adds = [dg.find_additionals(db.dg_additionals_table) for dg in dgs]
+
+    resp_data = {"dg": [{**dg.as_json(), "class": adds[i]["class"]} for i, dg in enumerate(dgs)]}
     return JSONResponse(status_code=200, content=resp_data)
 
 
@@ -104,7 +106,9 @@ async def get_dg_biopsy(biopsy_id: str):
         if dg.biopsy_id == biopsy_id:
             dgs.append(dg)
 
-    resp_data = {"dg": [dg.as_json() for dg in dgs]}
+    adds = [dg.find_additionals(db.dg_additionals_table) for dg in dgs]
+
+    resp_data = {"dg": [{**dg.as_json(), "class": adds[i]["class"]} for i, dg in enumerate(dgs)]}
     return JSONResponse(status_code=200, content=resp_data)
 
 
