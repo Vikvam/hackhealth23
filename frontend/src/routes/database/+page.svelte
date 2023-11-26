@@ -31,12 +31,7 @@
 
     onMount(async () => {
         columnsGeneDanger = [
-            {
-                id: "name",
-                name: "Gene",
-                field: "name",
-                formatter: linkFormatter,
-            },
+            { id: "name", name: "Gene", field: "name", formatter: linkFormatter },
             { id: "n_safe", name: "# Pathogenic", field: "n_safe" },
             { id: "n_dangerous", name: "# Benign", field: "n_dangerous" },
             { id: "freq", name: "% Freq", field: "freq" },

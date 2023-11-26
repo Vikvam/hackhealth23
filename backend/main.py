@@ -153,7 +153,8 @@ def get_gene_danger():
         return list(result.values())
 
     counts = count_classes(data)
-    counts = [{"freq": str(round(100*count["n_dangerous"]/(count["n_safe"] + count["n_dangerous"]))) + "%", **count} for count in counts]
+    map_freq = lambda count: str(round(100*count["n_dangerous"]/(count["n_safe"] + count["n_dangerous"]))) + "%" if (count["n_safe"] + count["n_dangerous"]) != 0 else "infty"
+    counts = [{"freq": map_freq(count), **count} for count in counts]
     return sorted(counts, key=lambda x: x["n_dangerous"], reverse=True)
 
 if __name__ == "__main__":
