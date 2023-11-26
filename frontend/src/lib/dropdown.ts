@@ -18,7 +18,7 @@ export function dropdownEditor(args) {
         $select = document.createElement("select");
         $select.id = args.item.id;
         $select.addEventListener("change", (e) => {
-            args.item["Severity"] = $select.value}
+            args.item[args.column.field] = $select.value}
         )
         insertOptions($select);
         args.container.appendChild($select);
@@ -33,33 +33,15 @@ export function dropdownEditor(args) {
         $select.value = item[args.column.field];
     };
 
-    this.loadValue = function (item) {
-        console.log("loadValue")
-        $select.value = defaultValue;
-        $select.focus();
-    };
+    this.loadValue = function (item) {};
 
-    this.applyValue = function(item, state) {
-        console.log("applyValue", args.column.field, item, state)
-        $select.value = state;
-    };
+    this.applyValue = function(item, state) {};
 
-    this.isValueChanged = function () {
-        console.log("isValueChanged")
-        return ($select.value != defaultValue);
-    };
+    this.isValueChanged = function () {};
 
-    this.serializeValue = function () {
-        console.log("serializeValue →", $select.value)
-        return $select.value;
-    };
+    this.serializeValue = function () {};
 
-    this.validate = function () {
-        return {
-            valid: true,
-            msg: null
-        };
-    };
+    this.validate = function () {};
 
     this.init();
 }

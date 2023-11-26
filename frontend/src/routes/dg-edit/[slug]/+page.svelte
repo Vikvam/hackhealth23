@@ -21,9 +21,16 @@
         return response.json();
     }
 
+    function onCellChange(_, args) {
+        const biopsy_id = args.item["biopsy_id"];
+        console.log(args)
+        // const column = args.column.field;
+        // const change = {[column]: args.item[column]};
+    }
+
     onMount(async () => {
         columns = [
-            {id: "Severity", name: "Severity", field: "Severity", editor: dropdownEditor},
+            {id: "class", name: "Severity", field: "class", editor: dropdownEditor},
             // {id: "id", name: "id", field: "id"},
             {id: "Biopsy ID", name: "Biopsy ID", field: "Biopsy ID"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},
@@ -55,7 +62,7 @@
 </Label>
 
 {#if mounted}
-    <Table {columns} {rows} />
+    <Table {columns} {rows} {onCellChange} />
 {/if}
 
 <style>
