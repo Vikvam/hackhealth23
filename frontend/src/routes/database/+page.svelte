@@ -130,10 +130,10 @@
     }
 
     canvas {
-        max-height: 300px;
-        max-width: 300px;
-        width: 100%;
-        height: 100%;
+        max-height: 300px !important;
+        max-width: 300px !important;
+        width: 100% !important;
+        height: 100% !important;
         display: block;
         margin: auto;
     }
