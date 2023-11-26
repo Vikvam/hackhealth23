@@ -28,7 +28,7 @@
         fetch(
             "http://localhost:8000/classify_dg/?fhir_id=" + fhir_id + "&" + "classification=" + args.item[column],
             {method: "POST", body: JSON.stringify({}), mode: "cors", headers: {"Content-Type": "application/json"}},
-        ).then(response => console.log(response));
+        ); //.then(response => console.log(response));
     }
 
     function insertOptions(selectNode, selected) {
@@ -52,7 +52,6 @@
             $select.id = args.item.id;
             $select.addEventListener("change", (e) => {
                 args.item[args.column.field] = $select.value;
-                console.log(args.container.offsetParent);
                 onCellChange(args);
             })
             insertOptions($select);
@@ -81,9 +80,21 @@
         this.init();
     }
 
+    function dropdownFormatter(row, cell, value, columnDef, dataContext) {
+        let span = document.createElement("span");
+        span.innerText = value;
+        span.classList.add("classification");
+        span.classList.add("classification-" + value);
+        // let grid = document.querySelector("#dg-table .slick-viewport .grid-canvas");
+        // if (grid && grid.childNodes[row]) {
+        //     grid.childNodes[row].classList.add("classification-" + value);
+        // }
+        return span;
+    }
+
     onMount(async () => {
         columns = [
-            {id: "classification", name: "Severity", field: "classification", editor: dropdownEditor},
+            {id: "classification", name: "Severity", field: "classification", editor: dropdownEditor, formatter: dropdownFormatter},
             // {id: "id", name: "id", field: "id"},
             {id: "Biopsy ID", name: "Biopsy ID", field: "Biopsy ID"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},
@@ -106,6 +117,13 @@
         rows = (await fetchData()).dg;
         rows = rows.map(i => ({"Severity": "unknown", ...i}));
         mounted = true;
+
+        // setTimeout(() => {
+        //     let grid = document.querySelector("#dg-table .slick-viewport .grid-canvas");
+        //     for (let i = 0; i < grid.children.length; i++) {
+        //         grid.childNodes[i].classList.add("classification-" + grid.childNodes[i].firstChild.firstChild.innerText)
+        //     }
+        // }, 150);
     });
 </script>
 
@@ -115,11 +133,27 @@
 </Label>
 
 {#if mounted}
-    <Table {columns} {rows} />
+    <Table {columns} {rows} tableId="dg-table"/>
 {/if}
 
 <style>
     span {
         font-weight: bold;
+    }
+    :global(.classification) {
+        display: inline-block;
+        width: 100%;
+    }
+    :global(.classification-unasigned) {
+        background-color: white !important;
+    }
+    :global(.classification-benign) {
+        background-color: lightgreen !important;
+    }
+    :global(.classification-unknown) {
+        background-color: palegoldenrod !important;
+    }
+    :global(.classification-severe) {
+        background-color: lightcoral !important;
     }
 </style>
