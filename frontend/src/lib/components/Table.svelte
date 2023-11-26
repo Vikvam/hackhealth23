@@ -7,6 +7,7 @@
     export let usePager = true;
     export let columns;
     export let rows;
+    export let extraOptions = {};
 
 
     export let onCellChange = () => {};
@@ -21,6 +22,7 @@
         showHeaderRow: true,
         defaultColumnWidth: 160,
         editable: true,
+
     };
 
     function filter(item) {
@@ -53,7 +55,7 @@
 
     function renderTable() {
         dataView = new SlickDataView({});
-        grid = new SlickGrid(`#${"table" + tableId}`, dataView, columns, options);
+        grid = new SlickGrid(`#${tableId}`, dataView, columns, options);
 
         dataView.onRowCountChanged.subscribe(function (e, args) {
             grid.updateRowCount();
@@ -92,7 +94,7 @@
 
         let pager;
         if (usePager) {
-            pager = new SlickGridPager(dataView, grid, `#${"table" + tableId}`);
+            pager = new SlickGridPager(dataView, grid, `#${"pager" + tableId}`);
         }
         dataView.beginUpdate();
         dataView.setItems(rows);
@@ -109,7 +111,7 @@
     });
 </script>
 
-<div id={"table" + tableId} style="width:100%;height:{heightStyle};" />
+<div id={tableId} style="width:100%;height:{heightStyle};" />
 {#if usePager}
     <div id={"pager" + tableId} style="width:100%;"></div>
 {/if}
