@@ -3,7 +3,6 @@
     import { Label } from "flowbite-svelte";
     import { CheckboxFormatter } from "slickgrid";
     import Table from "$lib/components/Table.svelte";
-    import { dropdownFormatter, dropdownEditor } from "$lib/dropdown.ts";
 
     export let data;
     let slug = data.slug;
@@ -21,16 +20,69 @@
         return response.json();
     }
 
-    function onCellChange(_, args) {
-        const biopsy_id = args.item["biopsy_id"];
-        console.log(args)
-        // const column = args.column.field;
-        // const change = {[column]: args.item[column]};
+    function onCellChange(args) {
+        const fhir_id = args.item["id"];
+        const column = args.column.field; // Severity, classification
+        const change = {[column]: args.item[column], fhir_id: fhir_id};
+        fetch(
+            "http://localhost:8000/classify_dg/",
+            {method: "POST", body: JSON.stringify(change), mode: "cors", headers: {"Content-Type": "application/json"}},
+        ).then(response => console.log(response));
+    }
+
+    function insertOptions(selectNode, selected) {
+        const options = ["unasigned", "benign", "unknown", "severe"];
+        options.forEach(optionText => {
+            const option = document.createElement("option");
+            option.text = optionText;
+            option.value = optionText; // Set the value if needed
+            if (selected == optionText) option.selected = true;
+            selectNode.appendChild(option);
+        });
+    }
+
+    function dropdownEditor(args) {
+        let $select;
+        let defaultValue;
+        let scope = this;
+
+        this.init = function () {
+            $select = document.createElement("select");
+            $select.id = args.item.id;
+            $select.addEventListener("change", (e) => {
+                args.item[args.column.field] = $select.value;
+                // console.log("?", args)
+                onCellChange(args);
+            })
+            insertOptions($select);
+            args.container.appendChild($select);
+            $select.focus();
+        }
+
+        this.destroy = function () {
+            $select.remove();
+        };
+
+        this.focus = function () {
+            $select.value = item[args.column.field];
+        };
+
+        this.loadValue = function (item) {};
+
+        this.applyValue = function(item, state) {};
+
+        this.isValueChanged = function () {};
+
+        this.serializeValue = function () {};
+
+        this.validate = function () {};
+
+        this.init();
     }
 
     onMount(async () => {
         columns = [
-            {id: "class", name: "Severity", field: "class", editor: dropdownEditor},
+            {id: "classification", name: "Severity", field: "classification", editor: dropdownEditor},
             // {id: "id", name: "id", field: "id"},
             {id: "Biopsy ID", name: "Biopsy ID", field: "Biopsy ID"},
             {id: "Chromosome", name: "Chromosome", field: "Chromosome"},
@@ -62,7 +114,7 @@
 </Label>
 
 {#if mounted}
-    <Table {columns} {rows} {onCellChange} />
+    <Table {columns} {rows} />
 {/if}
 
 <style>
