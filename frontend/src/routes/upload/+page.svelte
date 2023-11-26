@@ -1,9 +1,13 @@
 <script>
     import {goto} from "$app/navigation.js";
-    import {Fileupload, Helper, Input, Label, Button, Heading} from "flowbite-svelte";
+    import {Fileupload, Select, Helper, Input, Label, Button, Heading} from "flowbite-svelte";
 
     let id;
     let filepath;
+    let configs = [
+      {name: "config1", value: "config1"},
+      {name: "config2", value: "config2"},
+    ]
 
     function uploadFile() {
         const fileUpload = document.getElementById("file-upload");
@@ -25,14 +29,18 @@
   <Heading tag="h3" class="space-y-10 mb-4">Insert new biopsy</Heading>
   <!--  TODO: validation-->
   <Label class="space-y-4 mt-4 mb-4">
-    <span>Biopsy ID</span>
+    <span>Biopsy ID:</span>
     <Input bind:value={id} />
   </Label>
   <Label class="space-y-4 mt-4 mb-4">
-    <span>DG file</span>
+    <span>DG file:</span>
     <Fileupload id="file-upload" bind:value={filepath} />
     <Helper>Excel files</Helper>
     <Helper>File: {filepath ? filepath : "No file uploaded"}</Helper>
+  </Label>
+  <Label class="space-y-4 mt-4 mb-4">
+    <span>Format configuration:</span>
+    <Select items={configs} />
   </Label>
   <Button on:click={uploadFile} class="mt-4">Insert into database</Button>
 </div>

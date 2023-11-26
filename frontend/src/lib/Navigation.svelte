@@ -4,8 +4,8 @@
 
 <Navbar fluid=true >
   <NavBrand href="/">
-    <img src="/favicon.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
-    <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
+    <img src="/logo.png" class="mr-3 h-6 sm:h-16" alt="Flowbite Logo" />
+    <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">ČesGEN</span>
   </NavBrand>
   <NavHamburger  />
   <NavUl >
