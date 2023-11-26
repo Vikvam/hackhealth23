@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import {TextEditor} from "slickgrid";
     import Table from "$lib/components/Table.svelte";
+    import {Heading} from "flowbite-svelte";
 
     let mounted = false;
     let columns = [];
@@ -57,6 +58,7 @@
 </script>
 
 {#if mounted}
+    <Heading tag="h3">CLC</Heading>
     <Table {columns} {rows} {onCellChange} />
 {/if}
 

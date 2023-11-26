@@ -5,12 +5,21 @@
 
     let mounted = false;
     let columnsGeneDanger = [];
-    let columns = [];
     let rowsGeneDanger = [];
-    let rows = [];
+    let columnsMutationTypeDanger = [];
+    let rowsMutationTypeDanger = [];
 
-    async function fetchData() {
+    async function fetchGeneDangerData() {
         const response = await fetch("http://localhost:8000/geneDanger");
+        if (response.status > 400) {
+            console.log("ERR"); // TODO
+            return;
+        }
+        return response.json();
+    }
+
+    async function fetchMutationTypeDangerData() {
+        const response = await fetch("http://localhost:8000/mutationTypeDanger");
         if (response.status > 400) {
             console.log("ERR"); // TODO
             return;
@@ -21,7 +30,7 @@
     function linkFormatter(row, cell, value, columnDef, dataContext) {
         console.log(value);
         return (
-            "<a style='color: blue; text-decoration: underline' href='http://www.google.com/search?q=" +
+            "<a style='color: blue; text-decoration: underline' href='https://www.genecards.org/Search/Keyword?queryString=" +
             value +
             "' target='_blank'>" +
             value +
@@ -31,18 +40,23 @@
 
     onMount(async () => {
         columnsGeneDanger = [
-            {
-                id: "name",
-                name: "Gene",
-                field: "name",
-                formatter: linkFormatter,
-            },
+            { id: "name", name: "Gene", field: "name", formatter: linkFormatter },
             { id: "n_safe", name: "# Pathogenic", field: "n_safe" },
             { id: "n_dangerous", name: "# Benign", field: "n_dangerous" },
             { id: "freq", name: "% Freq", field: "freq" },
         ];
-        rowsGeneDanger = await fetchData();
-        console.log(rowsGeneDanger);
+        rowsGeneDanger = await fetchGeneDangerData();
+        mounted = true;
+
+
+        columnsMutationTypeDanger = [
+            { id: "mutation_type", name: "Mutation Type", field: "mutation_type" },
+            { id: "n_safe", name: "# Pathogenic", field: "n_safe" },
+            { id: "n_dangerous", name: "# Benign", field: "n_dangerous" },
+            { id: "freq", name: "% Freq", field: "freq" },
+        ];
+        rowsMutationTypeDanger = await fetchMutationTypeDangerData();
+        console.log(rowsMutationTypeDanger)
         mounted = true;
 
         setTimeout(() => {
@@ -92,22 +106,14 @@
                 usePager={true}
             />
         </div>
+
         <div><canvas id="circularChart" width="150" height="150" /></div>
 
         <div>
             <Table
                 tableId="table3"
-                {columns}
-                {rows}
-                heightStyle="200px"
-                usePager={true}
-            />
-        </div>
-        <div>
-            <Table
-                tableId="table4"
-                {columns}
-                {rows}
+                columns={columnsMutationTypeDanger}
+                rows={rowsMutationTypeDanger}
                 heightStyle="200px"
                 usePager={true}
             />

@@ -153,7 +153,39 @@ def get_gene_danger():
         return list(result.values())
 
     counts = count_classes(data)
-    counts = [{"freq": str(round(100*count["n_dangerous"]/(count["n_safe"] + count["n_dangerous"]))) + "%", **count} for count in counts]
+    map_freq = lambda count: str(round(100*count["n_dangerous"]/(count["n_safe"] + count["n_dangerous"]))) + "%" if (count["n_safe"] + count["n_dangerous"]) != 0 else "infty"
+    counts = [{"freq": map_freq(count), **count} for count in counts]
+    return sorted(counts, key=lambda x: x["n_dangerous"], reverse=True)
+
+@app.get("/mutationTypeDanger")
+def get_mutation_type_danger():
+    dgs = isc.get("/Observation")
+    dgs = [DG.from_fhir(dg) for dg in dgs["entry"]]
+    adds = [dg.find_additionals(db.dg_additionals_table) for dg in dgs]
+    for i, add in enumerate(adds):
+        if add["class"] is None:
+            adds[i]["class"] = random.choice(["Benign", "Pathogenic"])
+    data = [{"id": dg.id, "mutation_type": dg.type, "class": add["class"]} for dg, add in zip(dgs, adds)]
+
+    def count_classes(data):
+        result = {}
+        for item in data:
+            mutation_type = item['mutation_type']
+            class_type = item['class']
+            if mutation_type not in result:
+                result[mutation_type] = {'mutation_type': mutation_type, 'n_safe': 0, 'n_dangerous': 0, "id": item["id"]}
+            if class_type == 'Benign':
+                result[mutation_type]['n_safe'] += 1
+            elif class_type == 'Pathogenic':
+                result[mutation_type]['n_dangerous'] += 1
+        return list(result.values())
+
+    counts = count_classes(data)
+    print(counts)
+    map_freq = lambda count: str(
+        round(100 * count["n_dangerous"] / (count["n_safe"] + count["n_dangerous"]))) + "%" if (count["n_safe"] + count[
+        "n_dangerous"]) != 0 else "infty"
+    counts = [{"freq": map_freq(count), **count} for count in counts]
     return sorted(counts, key=lambda x: x["n_dangerous"], reverse=True)
 
 if __name__ == "__main__":

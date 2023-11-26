@@ -21,6 +21,7 @@
         enableColumnReorder: true,
         showHeaderRow: true,
         defaultColumnWidth: 160,
+        rowHeight: 36,
         editable: true,
 
     };
@@ -111,7 +112,16 @@
     });
 </script>
 
-<div id={tableId} style="width:100%;height:{heightStyle};" />
-{#if usePager}
-    <div id={"pager" + tableId} style="width:100%;"></div>
-{/if}
+<div class="table-container">
+    <div id={tableId} style="width:100%;height:{heightStyle};" />
+    {#if usePager}
+        <div id={"pager" + tableId} style="width:100%;"></div>
+    {/if}
+</div>
+
+<style>
+    .table-container {
+        width: 100%;
+        margin: 2rem 0;
+    }
+</style>
