@@ -80,7 +80,7 @@
 
         grid.onCellChange.subscribe((e, args) => onCellChange(e, args));
 
-        grid.setSelectionModel(new SlickCellSelectionModel());
+        // grid.setSelectionModel(new SlickCellSelectionModel());
 
         grid.init();
         grid.setOptions({autoEdit: true, autoCommitEdit: true});
@@ -101,3 +101,4 @@
 </script>
 
 <div id="slickgrid" style="width:100%;height:500px;" />
+
