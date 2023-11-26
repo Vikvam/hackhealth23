@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import {Heading} from "flowbite-svelte";
     import Table from "$lib/components/Table.svelte";
 
     let mounted = false;
@@ -60,5 +61,6 @@
 </script>
 
 {#if mounted}
+    <Heading tag="h3">Variations</Heading>
     <Table {columns} {rows} />
 {/if}
