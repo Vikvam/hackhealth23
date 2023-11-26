@@ -17,7 +17,9 @@ export function dropdownEditor(args) {
     this.init = function () {
         $select = document.createElement("select");
         $select.id = args.item.id;
-        $select.addEventListener("change", (e) => console.log($select.value))
+        $select.addEventListener("change", (e) => {
+            args.item["Severity"] = $select.value}
+        )
         insertOptions($select);
         args.container.appendChild($select);
         $select.focus();
