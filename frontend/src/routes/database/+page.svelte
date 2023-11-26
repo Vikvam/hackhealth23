@@ -27,7 +27,7 @@
         return response.json();
     }
 
-    function linkFormatter(row, cell, value, columnDef, dataContext) {
+    function geneNameFormatter(row, cell, value, columnDef, dataContext) {
         console.log(value);
         return (
             "<a style='color: blue; text-decoration: underline' href='https://www.genecards.org/Search/Keyword?queryString=" +
@@ -40,13 +40,12 @@
 
     onMount(async () => {
         columnsGeneDanger = [
-            { id: "name", name: "Gene", field: "name", formatter: linkFormatter },
+            { id: "name", name: "Gene", field: "name", formatter: geneNameFormatter },
             { id: "n_safe", name: "# Pathogenic", field: "n_safe" },
             { id: "n_dangerous", name: "# Benign", field: "n_dangerous" },
             { id: "freq", name: "% Freq", field: "freq" },
         ];
         rowsGeneDanger = await fetchGeneDangerData();
-        mounted = true;
 
 
         columnsMutationTypeDanger = [
@@ -57,7 +56,6 @@
         ];
         rowsMutationTypeDanger = await fetchMutationTypeDangerData();
         console.log(rowsMutationTypeDanger)
-        mounted = true;
 
         setTimeout(() => {
             const ctx = document
@@ -91,6 +89,7 @@
                 data: chartData,
             });
         }, 50);
+        mounted = true;
     });
 </script>
 
@@ -102,7 +101,7 @@
                 columns={columnsGeneDanger}
                 rows={rowsGeneDanger}
                 options={{ defaultColumnWidth: 30 }}
-                heightStyle="350px"
+                heightStyle="400px"
                 usePager={true}
             />
         </div>
@@ -114,7 +113,7 @@
                 tableId="table3"
                 columns={columnsMutationTypeDanger}
                 rows={rowsMutationTypeDanger}
-                heightStyle="200px"
+                heightStyle="400px"
                 usePager={true}
             />
         </div>
