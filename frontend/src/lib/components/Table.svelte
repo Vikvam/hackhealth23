@@ -18,7 +18,7 @@
     let columnFilters = {};
     let options = {
         enableCellNavigation: true,
-        enableColumnReorder: false,
+        enableColumnReorder: true,
         showHeaderRow: true,
         defaultColumnWidth: 160,
         editable: true,

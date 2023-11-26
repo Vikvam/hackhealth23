@@ -50,7 +50,7 @@
             { id: "genom_build_puvodni", name: "Original Genome Build", field: "genom_build_puvodni", editor: TextEditor }
         ];
         rows = await fetchData();
-        rows = rows.map(i => ({id: i.biopsy_id, ...i}));
+        rows = rows.map((i, idx) => ({id: idx, ...i}));
         console.log(rows);
         mounted = true;
     });
